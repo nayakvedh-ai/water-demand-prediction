@@ -738,7 +738,7 @@ The project serves as a prototype demonstrating how data-driven technologies can
 
 
 
-\*\*EVS Assignment II — Digital/Technology-Based Environmental Solution\*\*
+\*\*EVS Assignment I — Digital/Technology-Based Environmental Solution\*\*
 
 
 
