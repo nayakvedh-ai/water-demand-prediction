@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Water Demand Prediction System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="container">
+
+        <h1>💧 AquaPredict</h1>
+
+        <p>
+            AI-Based Water Demand Prediction & Conservation System
+        </p>
+
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <h2>Smarter Water Management with AI</h2>
+
+    <p>
+        Predict future water demand using environmental and
+        historical consumption data. Use these insights to
+        support better planning and water conservation.
+    </p>
+
+</section>
+
+
+<section class="prediction-card">
+
+    <h3>Predict Water Demand</h3>
+
+
+    <form action="/predict" method="POST">
+
+        <div class="form-group">
+
+            <label>
+                Temperature (°C)
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="temperature"
+                placeholder="Example: 30"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Rainfall (mm)
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="rainfall"
+                placeholder="Example: 2"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Humidity (%)
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="humidity"
+                placeholder="Example: 65"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Previous Day Water Demand
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="previous_demand"
+                placeholder="Example: 11000"
+                required
+            >
+
+        </div>
+
+
+        <button type="submit">
+            Predict Water Demand
+        </button>
+
+    </form>
+
+
+    {% if prediction %}
+
+<div class="result">
+
+    <h2>Predicted Water Demand</h2>
+
+    <div class="value">
+        {{ prediction }} units
+    </div>
+
+    <h3>
+        {{ demand_level }}
+    </h3>
+
+    <p>
+        {{ recommendation }}
+    </p>
+
+</div>
+
+{% endif %}
+
+</section>
+
+
+<section class="dashboard">
+
+    <div class="container">
+
+        <h2>Water Demand Dashboard</h2>
+
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card">
+
+                <h3>Average Demand</h3>
+
+                <div class="dashboard-value">
+                    {{ average_demand }}
+                </div>
+
+                <p>Average daily demand</p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h3>Maximum Demand</h3>
+
+                <div class="dashboard-value">
+                    {{ maximum_demand }}
+                </div>
+
+                <p>Highest recorded demand</p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h3>Minimum Demand</h3>
+
+                <div class="dashboard-value">
+                    {{ minimum_demand }}
+                </div>
+
+                <p>Lowest recorded demand</p>
+
+            </div>
+
+        </div>
+    <div class="chart-container">
+
+    <h3>Historical Water Demand</h3>
+
+    <canvas id="demandChart"></canvas>
+
+</div>
+
+    </div>
+
+</section>
+
+<section class="info">
+
+    <div class="container">
+
+        <h2>How the System Helps</h2>
+
+
+        <div class="cards">
+
+
+            <div class="card">
+
+                <h3>🌡️ Demand Prediction</h3>
+
+                <p>
+                    The machine learning model analyzes
+                    environmental and historical information
+                    to estimate water demand.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>💧 Better Planning</h3>
+
+                <p>
+                    Demand estimates can help identify
+                    periods of higher water consumption
+                    and support resource planning.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>🌱 Conservation</h3>
+
+                <p>
+                    Understanding expected demand can
+                    support more efficient water use
+                    and conservation strategies.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        AI-Based Water Demand Prediction and
+        Conservation Management System
+    </p>
+
+    <p>
+        EVS Assignment II • Prototype Project
+    </p>
+
+</footer>
+
+<script>
+
+    const dates = {{ dates | tojson }};
+
+    const demands = {{ demands | tojson }};
+
+
+    const ctx = document.getElementById("demandChart");
+
+
+    new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: dates,
+
+            datasets: [{
+
+                label: "Water Demand",
+
+                data: demands,
+
+                borderWidth: 2,
+
+                fill: false,
+
+                tension: 0.2
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                x: {
+
+                    ticks: {
+
+                        maxTicksLimit: 12
+
+                    }
+
+                },
+
+                y: {
+
+                    beginAtZero: false
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
